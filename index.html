@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -100,8 +101,22 @@
         .line-clamp-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
         @keyframes spin { to { transform: rotate(360deg); } } .animate-spin { animation: spin 1s linear infinite; }
         @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } } .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; transform: translate3d(0, 0, 0); }
+        /* Add FadeIn Animation */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeIn { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
 
         .hidden { display: none !important; }
+
+        /* Styles for Glassmorphism effect */
+        .glassmorphism {
+            background: rgba(30, 41, 59, 0.6); /* Slightly transparent bg-card */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* For Safari */
+            border-radius: 16px;
+            border: 1px solid rgba(51, 65, 85, 0.4); /* Lighter border-color */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
 
     </style>
     <!-- Tailwind Config -->
@@ -159,7 +174,7 @@
                              </div>
                              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div><label for="adminToolUrlInput" class="form-label">URL do Site</label><input type="url" id="adminToolUrlInput" required class="form-input" placeholder="https://..."></div>
-                                <div><label for="adminToolMediaInput" class="form-label">URL Mídia (Opcional)</label><input type="text" id="adminToolMediaInput" class="form-input" placeholder="Auto Unsplash se vazio"></div>
+                                <div><label for="adminToolMediaInput" class="form-label">URL Mídia (Opcional)</label><input type="text" id="adminToolMediaInput" class="form-input" placeholder="Padrão Unsplash se vazio"></div> <!-- Placeholder updated -->
                              </div>
                              <div class="flex items-center space-x-6 pt-2">
                                  <div class="flex items-center space-x-2"><input type="checkbox" id="adminToolFeaturedCheckbox" class="form-check-input"><label for="adminToolFeaturedCheckbox" class="form-check-label">Destaque</label></div>
@@ -183,13 +198,19 @@
                          <div class="admin-table-container mb-4">
                              <table class="admin-table">
                                  <thead><tr><th>Nome</th><th class="actions">Ações</th></tr></thead>
-                                 <tbody id="adminToolsListTbody">{/* Populated */}</tbody>
+                                 <tbody id="adminToolsListTbody"></tbody>
                              </table>
                          </div>
+                         <!-- MODIFIED: Added CSV Buttons -->
                          <div class="mt-auto space-y-3 flex-shrink-0">
-                            <button id="adminExportBtn" class="btn btn-secondary w-full"><i class="fas fa-file-export"></i>Exportar (JSON)</button>
-                            <button id="adminImportBtn" class="btn btn-secondary w-full"><i class="fas fa-file-import"></i>Importar (JSON)</button>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button id="adminExportBtn" class="btn btn-secondary w-full text-sm"><i class="fas fa-file-code"></i>Exportar (JSON)</button>
+                                <button id="adminImportBtn" class="btn btn-secondary w-full text-sm"><i class="fas fa-file-code"></i>Importar (JSON)</button>
+                                <button id="adminExportCsvBtn" class="btn btn-secondary w-full text-sm"><i class="fas fa-file-csv"></i>Exportar (CSV)</button>
+                                <button id="adminImportCsvBtn" class="btn btn-secondary w-full text-sm"><i class="fas fa-file-csv"></i>Importar (CSV)</button>
+                            </div>
                         </div>
+                        <!-- END MODIFICATION -->
                     </div>
                 </div>
             </div>
@@ -333,7 +354,7 @@
         <!-- Newsletter -->
         <section class="section-padding bg-slate-800">
             <div class="container max-w-4xl">
-                 <div class="glassmorphism p-8 md:p-12 text-center">
+                 <div class="glassmorphism p-8 md:p-12 text-center"> <!-- Applied glassmorphism -->
                     <i class="fas fa-envelope-open-text text-5xl mb-5 text-accent"></i>
                     <h3 class="text-3xl font-bold mb-3 text-white">Fique por Dentro</h3>
                     <p class="mb-8 text-text-muted max-w-xl mx-auto">Assine nossa newsletter e receba as últimas ferramentas e tendências.</p>
@@ -354,7 +375,7 @@
                      <div><h4 class="text-md font-bold mb-4 text-text-main font-heading uppercase tracking-wider">Suporte</h4><ul class="space-y-2 text-sm"><li><a href="#" class="hover:text-accent transition">FAQ</a></li><li><a href="#" class="hover:text-accent transition">Contato</a></li><li><a href="#" class="hover:text-accent transition">Termos</a></li><li><a href="#" class="hover:text-accent transition">Privacidade</a></li></ul></div>
                      <div><h4 class="text-md font-bold mb-4 text-text-main font-heading uppercase tracking-wider">Sobre</h4><ul class="space-y-2 text-sm"><li><a href="#" class="hover:text-accent transition">Nossa Missão</a></li><li><a href="#" class="hover:text-accent transition">Submeter</a></li><li><a href="#" class="hover:text-accent transition">Parcerias</a></li></ul></div>
                  </div>
-                 <div class="border-t border-border-color mt-8 pt-8 text-center text-sm"><p>© <span id="currentYear"></span> AI Tools Hub. Feito com <i class="fas fa-heart text-red-500 mx-1"></i>.</p></div>
+                 <div class="border-t border-border-color mt-8 pt-8 text-center text-sm"><p>© <span id="currentYear"></span> AI Tools Hub. Feito com <i class="fas fa-heart text-red-500 mx-1"></i><li><a href="https://www.instagram.com/joaoricardo.pe" class="hover:text-accent transition">João Ricardo</a></p></div>
              </div>
         </footer>
     </div>
@@ -364,8 +385,11 @@
         // --- Constants & Initial Data ---
         const ITEMS_PER_PAGE_GRID = 16;
         const ITEMS_PER_PAGE_LIST = 10;
+        // MODIFIED: Added default image URL
+        const DEFAULT_IMAGE_URL = 'https://images.unsplash.com/photo-1684369176170-463e84248b70?q=80&w=1684&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+        // END MODIFICATION
         const CATEGORIES = [ { id: 'all', name: 'Todas', icon: 'th-large', keywords: 'technology,abstract,future,cyberpunk' }, { id: 'ai', name: 'IA', icon: 'brain', keywords: 'ai,artificial intelligence,machine learning,robot,neural network,data science,generative,nlp' }, { id: 'writing', name: 'Escrita', icon: 'pencil-alt', keywords: 'writing,content,copywriting,text,blog,summarize,grammar,seo,script' }, { id: 'design', name: 'Design', icon: 'palette', keywords: 'design,graphic,ui,ux,illustration,vector,color,image generation,logo,mockup,font,3d,web design' }, { id: 'audio-video', name: 'Áudio & Vídeo', icon: 'film', keywords: 'audio,video,music,podcast,editing,generation,voiceover,sound effects,streaming,animation' }, { id: 'developer', name: 'Dev Tools', icon: 'code', keywords: 'developer,code,programming,api,debug,database,testing,hosting,cloud,low code,no code,git,ci/cd,framework' }, { id: 'productivity', name: 'Produtividade', icon: 'tasks', keywords: 'productivity,tasks,notes,organization,work,collaboration,project management,calendar,automation,mind map,presentation' }, { id: 'automation', name: 'Automação', icon: 'robot', keywords: 'automation,robot,workflow,script,integration,zapier,ifttt,rpa,scraping' }, { id: 'social-media', name: 'Mídia Social', icon: 'share-alt', keywords: 'social media,marketing,schedule,post,analytics,content creation,influencer,community' }, { id: 'ecommerce', name: 'E-commerce', icon: 'shopping-cart', keywords: 'ecommerce,store,shop,sell,online,dropshipping,payments,marketing,crm,logistics' }, { id: 'search', name: 'Busca & Dados', icon: 'search', keywords: 'search,data,research,analytics,business intelligence,market research,trends,osint,knowledge base' }, { id: 'finance', name: 'Finanças', icon: 'chart-pie', keywords: 'finance,money,investing,budget,stock,crypto,accounting,invoice,taxes,banking' }, { id: 'education', name: 'Educação', icon: 'graduation-cap', keywords: 'education,learning,course,study,knowledge,language,tutorial,skill,platform' }, { id: 'utilities', name: 'Utilitários', icon: 'tools', keywords: 'utility,tools,converter,file,system,pdf,screenshot,calculator,units,qr code,timer' }, { id: 'security', name: 'Segurança', icon: 'shield-alt', keywords: 'security,privacy,vpn,password,cybersecurity,antivirus,encryption,authentication,backup' }, { id: 'network', name: 'Redes & Infra', icon: 'network-wired', keywords: 'network,server,cloud,hosting,internet,dns,ip address,devops,monitoring,cdn' }, { id: 'blockchain', name: 'Blockchain', icon: 'link', keywords: 'blockchain,crypto,nft,web3,defi,smart contract,wallet,dao,metaverse' }, { id: 'hacking', name: 'Hacking Ético', icon: 'user-secret', keywords: 'hacking,security,pentest,cybersecurity,osint,forensics,ctf,vulnerability' }, { id: 'games', name: 'Jogos', icon: 'gamepad', keywords: 'game,gaming,fun,entertainment,retro,esports,streaming,development,asset' }, { id: 'health', name: 'Saúde', icon: 'heartbeat', keywords: 'health,wellness,fitness,meditation,mental health,nutrition,telemedicine,wearable' }, { id: 'communication', name: 'Comunicação', icon: 'comments', keywords: 'communication,chat,email,meeting,collaboration,video conference,voip,team' }, { id: 'geolocation', name: 'Geo', icon: 'map-marker-alt', keywords: 'map,geo,location,gps,travel,logistics,gis,routing,visualization' }, { id: 'government', name: 'Governo', icon: 'landmark', keywords: 'government,public service,document,official,legal,taxes,citizen,portal' }, { id: 'data-analysis', name: 'Análise Dados', icon: 'chart-line', keywords: 'data analysis,analytics,chart,visualization,bi,statistics,big data,reporting,dashboard' }, { id: 'others', name: 'Outros', icon: 'ellipsis-h', keywords: 'tool,utility,abstract,various,miscellaneous,cyberpunk,future,experimental,niche' } ];
-        let tools = []; // Populated on init
+        let tools = []; // Populated on init by processing your data
 
         // --- State Variables ---
         const appState = {
@@ -381,7 +405,10 @@
             // Admin Form
             adminForm: document.getElementById('adminForm'), adminFormTitle: document.getElementById('adminFormTitle'), adminToolIdInput: document.getElementById('adminToolIdInput'), adminToolNameInput: document.getElementById('adminToolNameInput'), adminToolDescInput: document.getElementById('adminToolDescInput'), adminToolCategorySelect: document.getElementById('adminToolCategorySelect'), adminToolTypeSelect: document.getElementById('adminToolTypeSelect'), adminToolUrlInput: document.getElementById('adminToolUrlInput'), adminToolMediaInput: document.getElementById('adminToolMediaInput'), adminToolFeaturedCheckbox: document.getElementById('adminToolFeaturedCheckbox'), adminToolEssentialCheckbox: document.getElementById('adminToolEssentialCheckbox'), adminAddBtn: document.getElementById('adminAddBtn'), adminUpdateBtn: document.getElementById('adminUpdateBtn'), adminCancelEditBtn: document.getElementById('adminCancelEditBtn'),
             // Admin Management
-            adminToolsListTbody: document.getElementById('adminToolsListTbody'), adminSearchInput: document.getElementById('adminSearchInput'), adminSearchBtn: document.getElementById('adminSearchBtn'), adminExportBtn: document.getElementById('adminExportBtn'), adminImportBtn: document.getElementById('adminImportBtn'),
+            adminToolsListTbody: document.getElementById('adminToolsListTbody'), adminSearchInput: document.getElementById('adminSearchInput'), adminSearchBtn: document.getElementById('adminSearchBtn'),
+            adminExportBtn: document.getElementById('adminExportBtn'), adminImportBtn: document.getElementById('adminImportBtn'),
+            adminExportCsvBtn: document.getElementById('adminExportCsvBtn'), // Added
+            adminImportCsvBtn: document.getElementById('adminImportCsvBtn'), // Added
             // Main UI
             mobileMenuToggle: document.getElementById('mobileMenuBtn'), mobileMenuContent: document.getElementById('mobileMenuContent'),
             listViewBtn: document.getElementById('listViewBtn'), gridViewBtn: document.getElementById('gridViewBtn'), mobileListViewBtn: document.getElementById('mobileListViewBtn'), mobileGridViewBtn: document.getElementById('mobileGridViewBtn'),
@@ -403,22 +430,24 @@
         document.addEventListener('DOMContentLoaded', () => {
             try {
                 DOMElements.currentYearSpan.textContent = new Date().getFullYear();
-                generateInitialTools(500);
+                processAndSetToolsData(); // <= Use your data here
                 populateCategoryFilters();
                 renderCategoryButtons();
                 setupEventListeners();
                 setupLogin();
                 setupAdminPanel();
                 updateStats();
-                setView(appState.currentView);
+                setView(appState.currentView); // Initial view setup
                 renderFeaturedTools();
-                console.log("AI Tools Hub Initialized Successfully.");
+                filterAndRenderTools(true); // <= Initial render after data setup
+                setupIntersectionObserver(); // <= Setup observer after initial render
+                console.log("AI Tools Hub Initialized Successfully with User Data.");
             } catch (error) {
                 console.error("Initialization failed:", error);
-                // Optionally display a user-friendly error message on the page
                 document.body.innerHTML = '<div style="color: white; padding: 20px; text-align: center;">Oops! Something went wrong during initialization. Please check the console for details.</div>';
             }
         });
+
 
         // --- Event Listener Setup ---
         function setupEventListeners() {
@@ -444,7 +473,10 @@
             document.addEventListener('click', (event) => {
                 if (!DOMElements.languageMenuBtn?.contains(event.target) && !DOMElements.languageDropdown?.contains(event.target)) DOMElements.languageDropdown?.classList.add('hidden');
                 if (!DOMElements.mobileLanguageMenuBtn?.contains(event.target) && !DOMElements.mobileLanguageDropdown?.contains(event.target)) DOMElements.mobileLanguageDropdown?.classList.add('hidden');
-                if (!DOMElements.mobileMenuToggle?.contains(event.target) && !DOMElements.mobileMenuContent?.contains(event.target)) hideMobileMenu();
+                // Close mobile menu if click is outside toggle button AND menu content
+                if (DOMElements.mobileMenuToggle && DOMElements.mobileMenuContent && !DOMElements.mobileMenuToggle.contains(event.target) && !DOMElements.mobileMenuContent.contains(event.target)) {
+                   hideMobileMenu();
+                }
             });
         }
 
@@ -458,7 +490,9 @@
             if (event?.target === DOMElements.filterCategorySelect) {
                 updateActiveCategoryButton(DOMElements.filterCategorySelect.value);
             }
-            setupIntersectionObserver();
+             // Re-setup observer after filtering and rendering
+             // Small delay to ensure DOM updates are likely complete
+            setTimeout(setupIntersectionObserver, 100);
         }
 
         function setView(view) {
@@ -471,14 +505,18 @@
             const listCont = [DOMElements.listViewContainer], gridCont = [DOMElements.gridViewContainer];
             if (view === 'list') { activateElements(listBtns); deactivateElements(gridBtns); showElements(listCont); hideElements(gridCont); DOMElements.allToolsTitle.innerHTML = `<i class="fas fa-list mr-3 text-accent"></i> Lista de Ferramentas`; }
             else { activateElements(gridBtns); deactivateElements(listBtns); showElements(gridCont); hideElements(listCont); DOMElements.allToolsTitle.innerHTML = `<i class="fas fa-th-large mr-3 text-accent"></i> Grid de Ferramentas`; }
-            filterAndRenderTools(true); setupIntersectionObserver();
+            filterAndRenderTools(true);
+            // Re-setup observer after view switch and rendering
+            // Small delay to ensure DOM updates are likely complete
+            setTimeout(setupIntersectionObserver, 100);
         }
 
         function filterToolsData() {
             const catVal = DOMElements.filterCategorySelect.value, typeVal = DOMElements.filterTypeSelect.value, sortVal = DOMElements.filterSortSelect.value, searchVal = DOMElements.mainSearchInput.value.toLowerCase().trim();
             let filtered = tools.filter(t => {
-                const catName = CATEGORIES.find(c => c.id === t.category)?.name || '';
-                const searchMatch = searchVal === '' || (t.name || '').toLowerCase().includes(searchVal) || (t.description || '').toLowerCase().includes(searchVal) || catName.toLowerCase().includes(searchVal) || (t.category || '').toLowerCase().includes(searchVal);
+                const catInfo = CATEGORIES.find(c => c.id === t.category);
+                const catName = catInfo?.name || ''; // Get the Portuguese name for searching
+                const searchMatch = searchVal === '' || (t.name || '').toLowerCase().includes(searchVal) || (t.description || '').toLowerCase().includes(searchVal) || catName.toLowerCase().includes(searchVal) || (t.category || '').toLowerCase().includes(searchVal); // Search category name or ID
                 const catMatch = catVal === 'all' || t.category === catVal;
                 const typeMatch = typeVal === 'all' || t.type === typeVal;
                 return searchMatch && catMatch && typeMatch;
@@ -509,47 +547,75 @@
              targetContainer?.appendChild(fragment); // Append only if container exists
 
              appState.isLoading = false; DOMElements.loadingIndicator?.classList.add('hidden');
-             if (endIndex >= appState.currentFilteredTools.length) {
-                 DOMElements.noMoreToolsMsg?.classList.remove('hidden'); if (appState.observer) appState.observer.disconnect();
+
+             // Check if more items exist AFTER rendering the current page
+             const hasMoreItems = (appState.currentPage * appState.itemsPerPage) < appState.currentFilteredTools.length;
+
+             if (!hasMoreItems) {
+                 DOMElements.noMoreToolsMsg?.classList.remove('hidden');
+                 if (appState.observer) appState.observer.disconnect();
              } else {
                  DOMElements.noMoreToolsMsg?.classList.add('hidden');
-                 // Re-observe only if needed and observer exists
-                 if (isInitialRender && appState.observer && DOMElements.infiniteScrollTrigger) {
-                    appState.observer.observe(DOMElements.infiniteScrollTrigger);
+                 // Ensure observer is watching if it exists and we're not already at the end
+                 if (appState.observer && DOMElements.infiniteScrollTrigger) {
+                     appState.observer.observe(DOMElements.infiniteScrollTrigger);
                  }
              }
         }
 
         // --- Infinite Scroll ---
         function setupIntersectionObserver() {
-            if (appState.observer) appState.observer.disconnect();
+            if (appState.observer) appState.observer.disconnect(); // Disconnect previous observer first
             if (!DOMElements.infiniteScrollTrigger) return; // Exit if trigger doesn't exist
 
-            if ((appState.currentPage * appState.itemsPerPage) >= appState.currentFilteredTools.length) {
-                 if(appState.currentFilteredTools.length > 0) DOMElements.noMoreToolsMsg?.classList.remove('hidden');
-                 DOMElements.loadingIndicator?.classList.add('hidden'); return;
+            const hasMoreItems = (appState.currentPage * appState.itemsPerPage) < appState.currentFilteredTools.length;
+
+            if (!hasMoreItems) {
+                if (appState.currentFilteredTools.length > 0) DOMElements.noMoreToolsMsg?.classList.remove('hidden');
+                DOMElements.loadingIndicator?.classList.add('hidden');
+                return; // No more items, don't setup observer
+            } else {
+                 DOMElements.noMoreToolsMsg?.classList.add('hidden'); // Hide if previously shown
             }
+
             const options = { root: null, rootMargin: '0px 0px 300px 0px', threshold: 0 };
             try {
                 appState.observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting && !appState.isLoading) {
-                            if ((appState.currentPage * appState.itemsPerPage) < appState.currentFilteredTools.length) { loadMoreItems(); }
-                            else { DOMElements.noMoreToolsMsg?.classList.remove('hidden'); DOMElements.loadingIndicator?.classList.add('hidden'); appState.observer.unobserve(DOMElements.infiniteScrollTrigger); }
+                            // Double check if there are still more items
+                             const stillMoreItems = (appState.currentPage * appState.itemsPerPage) < appState.currentFilteredTools.length;
+                            if (stillMoreItems) {
+                                loadMoreItems();
+                            } else {
+                                DOMElements.noMoreToolsMsg?.classList.remove('hidden');
+                                DOMElements.loadingIndicator?.classList.add('hidden');
+                                if (appState.observer) {
+                                    appState.observer.unobserve(DOMElements.infiniteScrollTrigger); // Stop observing
+                                    appState.observer.disconnect(); // Fully disconnect
+                                    appState.observer = null; // Clear observer reference
+                                }
+                            }
                         }
                     });
                 }, options);
                 appState.observer.observe(DOMElements.infiniteScrollTrigger);
             } catch (error) {
                 console.error("Failed to setup IntersectionObserver:", error);
-                // Fallback or alternative loading mechanism could be implemented here
             }
         }
 
         function loadMoreItems() {
-            if (appState.isLoading) return; appState.isLoading = true;
-            DOMElements.loadingIndicator?.classList.remove('hidden'); DOMElements.noMoreToolsMsg?.classList.add('hidden');
-            setTimeout(() => { appState.currentPage++; renderToolsPage(false); }, 300);
+            if (appState.isLoading) return;
+            appState.isLoading = true;
+            DOMElements.loadingIndicator?.classList.remove('hidden');
+            DOMElements.noMoreToolsMsg?.classList.add('hidden');
+            // Simulate network delay for loading effect
+            setTimeout(() => {
+                appState.currentPage++;
+                renderToolsPage(false); // Render the next page, false indicates not an initial render
+                 // isLoading is set back to false inside renderToolsPage
+            }, 300);
         }
 
         // --- Login / Admin Access Control ---
@@ -569,18 +635,24 @@
             if(DOMElements.adminCancelEditBtn) DOMElements.adminCancelEditBtn.addEventListener('click', resetAdminForm);
             if(DOMElements.adminSearchBtn) DOMElements.adminSearchBtn.addEventListener('click', searchAdminTools);
             if(DOMElements.adminSearchInput) DOMElements.adminSearchInput.addEventListener('keyup', (e) => { if (e.key === 'Enter' || DOMElements.adminSearchInput.value.length === 0 || DOMElements.adminSearchInput.value.length > 1) searchAdminTools(); });
+            // MODIFIED: Add listeners for CSV buttons
             if(DOMElements.adminExportBtn) DOMElements.adminExportBtn.addEventListener('click', exportToolsData);
             if(DOMElements.adminImportBtn) DOMElements.adminImportBtn.addEventListener('click', importToolsData);
+            if(DOMElements.adminExportCsvBtn) DOMElements.adminExportCsvBtn.addEventListener('click', exportToolsCSV); // Added
+            if(DOMElements.adminImportCsvBtn) DOMElements.adminImportCsvBtn.addEventListener('click', importToolsCSV); // Added
+            // END MODIFICATION
             if(DOMElements.closeAdminBtn) DOMElements.closeAdminBtn.addEventListener('click', hideAdminPanel);
         }
 
         function handleAdminFormSubmit(e) {
              e.preventDefault(); const id = parseInt(DOMElements.adminToolIdInput.value);
-             const fd = { name: DOMElements.adminToolNameInput.value, description: DOMElements.adminToolDescInput.value, category: DOMElements.adminToolCategorySelect.value, type: DOMElements.adminToolTypeSelect.value, url: DOMElements.adminToolUrlInput.value, media: DOMElements.adminToolMediaInput.value, featured: DOMElements.adminToolFeaturedCheckbox.checked, essential: DOMElements.adminToolEssentialCheckbox.checked, };
+             const fd = { name: DOMElements.adminToolNameInput.value, description: DOMElements.adminToolDescInput.value, category: DOMElements.adminToolCategorySelect.value, type: DOMElements.adminToolTypeSelect.value, url: DOMElements.adminToolUrlInput.value, media: DOMElements.adminToolMediaInput.value || null, // Store null if empty
+                 featured: DOMElements.adminToolFeaturedCheckbox.checked, essential: DOMElements.adminToolEssentialCheckbox.checked, };
              if (!fd.name || !fd.description || !fd.url) { alert('Nome, Descrição e URL obrigatórios.'); return; }
              try {
-                 if (id) { const idx = tools.findIndex(t => t.id === id); if (idx > -1) { tools[idx] = { ...tools[idx], ...fd, media: fd.media || getMediaUrl(fd.category, fd.name), }; alert('Atualizado!'); } else { alert('Erro: Não encontrado.'); } }
-                 else { const nt = { id: tools.length > 0 ? Math.max(...tools.map(t => t.id)) + 1 : 1, ...fd, media: fd.media || getMediaUrl(fd.category, fd.name), rating: randomRating(), dateAdded: new Date().toISOString().split('T')[0], badge: 'Novo', }; tools.unshift(nt); alert('Adicionado!'); }
+                 // Media logic now handled primarily in card creation
+                 if (id) { const idx = tools.findIndex(t => t.id === id); if (idx > -1) { tools[idx] = { ...tools[idx], ...fd }; alert('Atualizado!'); } else { alert('Erro: Não encontrado.'); } }
+                 else { const nt = { id: tools.length > 0 ? Math.max(...tools.map(t => t.id)) + 1 : 1, ...fd, rating: randomRating(), dateAdded: new Date().toISOString().split('T')[0], badge: 'Novo', }; tools.unshift(nt); alert('Adicionado!'); }
                  resetAdminForm(); appState.currentPage = 1; if (appState.observer) appState.observer.disconnect();
                  filterAndRenderTools(true); renderFeaturedTools(); renderAdminToolsList(); updateStats(); setupIntersectionObserver();
              } catch (error) {
@@ -591,18 +663,279 @@
         function resetAdminForm() { DOMElements.adminForm?.reset(); DOMElements.adminToolIdInput.value = ''; DOMElements.adminAddBtn?.classList.remove('hidden'); DOMElements.adminUpdateBtn?.classList.add('hidden'); DOMElements.adminCancelEditBtn?.classList.add('hidden'); DOMElements.adminFormTitle.textContent = 'Adicionar Nova Ferramenta'; }
         function handleEditTool(e) { const id = parseInt(e.currentTarget.dataset.id); const t = tools.find(x => x.id === id); if (!t) { console.error("Tool not found:", id); return; } DOMElements.adminToolIdInput.value = t.id; DOMElements.adminToolNameInput.value = t.name || ''; DOMElements.adminToolDescInput.value = t.description || ''; DOMElements.adminToolCategorySelect.value = t.category || ''; DOMElements.adminToolTypeSelect.value = t.type || 'free'; DOMElements.adminToolMediaInput.value = t.media || ''; DOMElements.adminToolUrlInput.value = t.url || ''; DOMElements.adminToolFeaturedCheckbox.checked = t.featured || false; DOMElements.adminToolEssentialCheckbox.checked = t.essential || false; DOMElements.adminAddBtn?.classList.add('hidden'); DOMElements.adminUpdateBtn?.classList.remove('hidden'); DOMElements.adminCancelEditBtn?.classList.remove('hidden'); DOMElements.adminFormTitle.textContent = 'Editar Ferramenta'; DOMElements.adminForm?.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         function searchAdminTools() { const s = DOMElements.adminSearchInput.value.toLowerCase(); const f = tools.filter(t => (t.name||'').toLowerCase().includes(s) || (t.description||'').toLowerCase().includes(s)); renderAdminToolsList(f); }
-        function exportToolsData() { try { const d = JSON.stringify(tools, null, 2); const b = new Blob([d], {type: "application/json"}); const u = URL.createObjectURL(b); const l = document.createElement('a'); l.href = u; l.download = `aitoolshub_export_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(l); l.click(); document.body.removeChild(l); URL.revokeObjectURL(u); } catch (e) { console.error("Export failed:", e); alert("Falha ao exportar."); } }
-        function importToolsData() { const i = document.createElement('input'); i.type = 'file'; i.accept = '.json,application/json'; i.onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { const d = JSON.parse(ev.target.result); if (Array.isArray(d) && d.length > 0 && 'id' in d[0] && 'name' in d[0]) { if (confirm(`Importar ${d.length} ferramentas? (Substituirá as atuais)`)) { tools = d; redistributePlatformTools(); appState.currentPage = 1; DOMElements.filterCategorySelect.value = 'all'; DOMElements.filterTypeSelect.value = 'all'; DOMElements.filterSortSelect.value = 'popular'; DOMElements.mainSearchInput.value = ''; if (appState.observer) appState.observer.disconnect(); filterAndRenderTools(true); renderFeaturedTools(); renderCategoryButtons(); renderAdminToolsList(); updateStats(); setupIntersectionObserver(); alert('Importado!'); } } else { alert('JSON inválido.'); } } catch (err) { console.error("Import failed:", err); alert('Erro ao ler JSON.'); } }; r.onerror = () => alert('Erro ao ler arquivo.'); r.readAsText(f); }; i.click(); }
+
+        // --- JSON Export / Import ---
+        function exportToolsData() { try { const d = JSON.stringify(tools, null, 2); const b = new Blob([d], {type: "application/json"}); const u = URL.createObjectURL(b); const l = document.createElement('a'); l.href = u; l.download = `aitoolshub_export_${new Date().toISOString().split('T')[0]}.json`; document.body.appendChild(l); l.click(); document.body.removeChild(l); URL.revokeObjectURL(u); } catch (e) { console.error("Export failed:", e); alert("Falha ao exportar JSON."); } }
+        function importToolsData() { const i = document.createElement('input'); i.type = 'file'; i.accept = '.json,application/json'; i.onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { const d = JSON.parse(ev.target.result); if (Array.isArray(d) && d.length > 0 && 'id' in d[0] && 'name' in d[0]) { if (confirm(`Importar ${d.length} ferramentas do JSON? (Substituirá as atuais)`)) { tools = d; appState.currentPage = 1; DOMElements.filterCategorySelect.value = 'all'; DOMElements.filterTypeSelect.value = 'all'; DOMElements.filterSortSelect.value = 'popular'; DOMElements.mainSearchInput.value = ''; if (appState.observer) appState.observer.disconnect(); filterAndRenderTools(true); renderFeaturedTools(); renderCategoryButtons(); renderAdminToolsList(); updateStats(); setupIntersectionObserver(); alert('JSON Importado!'); } } else { alert('JSON inválido.'); } } catch (err) { console.error("Import failed:", err); alert('Erro ao ler JSON.'); } }; r.onerror = () => alert('Erro ao ler arquivo.'); r.readAsText(f); }; i.click(); }
+
+        // --- NEW: CSV Export / Import ---
+        function escapeCsvValue(value) {
+            if (value === null || typeof value === 'undefined') {
+                return '';
+            }
+            const stringValue = String(value);
+            // If the value contains a comma, newline, or double quote, enclose it in double quotes
+            if (stringValue.includes(',') || stringValue.includes('\n') || stringValue.includes('"')) {
+                // Escape existing double quotes by doubling them
+                const escapedValue = stringValue.replace(/"/g, '""');
+                return `"${escapedValue}"`;
+            }
+            return stringValue;
+        }
+
+        function exportToolsCSV() {
+            try {
+                const headers = ['id', 'name', 'description', 'categoryName', 'categoryID', 'type', 'url', 'media', 'rating', 'dateAdded', 'featured', 'essential', 'badge'];
+                // Create a map for faster category name lookup
+                const categoryMap = CATEGORIES.reduce((acc, cat) => {
+                    acc[cat.id] = cat.name;
+                    return acc;
+                }, {});
+
+                const csvRows = [headers.join(',')]; // Header row
+
+                tools.forEach(tool => {
+                    const categoryName = categoryMap[tool.category] || tool.category; // Use name if found, else ID
+                    const row = [
+                        tool.id,
+                        tool.name,
+                        tool.description,
+                        categoryName, // Export Portuguese name for readability
+                        tool.category, // Also export ID for easier import matching
+                        tool.type,
+                        tool.url,
+                        tool.media, // Export media URL (can be null/empty)
+                        tool.rating,
+                        tool.dateAdded,
+                        tool.featured ? 'TRUE' : 'FALSE',
+                        tool.essential ? 'TRUE' : 'FALSE',
+                        tool.badge
+                    ].map(escapeCsvValue); // Escape each value
+                    csvRows.push(row.join(','));
+                });
+
+                const csvString = csvRows.join('\n');
+                const blob = new Blob([`\uFEFF${csvString}`], { type: 'text/csv;charset=utf-8;' }); // Add BOM for Excel compatibility
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `aitoolshub_export_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+            } catch (e) {
+                console.error("CSV Export failed:", e);
+                alert("Falha ao exportar CSV.");
+            }
+        }
+
+        // Basic CSV row parser (handles quoted fields with commas and escaped quotes "" within quoted fields)
+        function parseCsvRow(rowString) {
+            const values = [];
+            let currentVal = '';
+            let inQuotes = false;
+            for (let i = 0; i < rowString.length; i++) {
+                const char = rowString[i];
+                const nextChar = rowString[i + 1];
+
+                if (char === '"') {
+                    if (inQuotes && nextChar === '"') { // Handle escaped quote ""
+                        currentVal += '"';
+                        i++; // Skip next quote
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
+                } else if (char === ',' && !inQuotes) {
+                    values.push(currentVal.trim());
+                    currentVal = '';
+                } else {
+                    currentVal += char;
+                }
+            }
+            values.push(currentVal.trim()); // Add the last value
+            return values;
+        }
+
+
+        function importToolsCSV() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.csv,text/csv';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+
+                reader.onload = ev => {
+                    try {
+                        const csvContent = ev.target.result;
+                        const lines = csvContent.split(/\r?\n/).filter(line => line.trim() !== ''); // Split lines and remove empty ones
+
+                        if (lines.length < 2) {
+                            alert('Arquivo CSV vazio ou inválido (precisa de cabeçalho e pelo menos uma linha de dados).');
+                            return;
+                        }
+
+                         const rawHeaders = parseCsvRow(lines[0]); // Parse header row correctly
+                         const headers = rawHeaders.map(h => h.trim().toLowerCase()); // Use lowercase headers
+
+                        const importedTools = [];
+
+                        // Create a map for category ID lookup (name -> id)
+                        const categoryNameToIdMap = CATEGORIES.reduce((acc, cat) => {
+                            acc[cat.name.toLowerCase()] = cat.id;
+                            return acc;
+                        }, {});
+
+                        // Find indices of required and optional columns
+                        const idIndex = headers.indexOf('id');
+                        const nameIndex = headers.indexOf('name');
+                        const descIndex = headers.indexOf('description');
+                        const catNameIndex = headers.indexOf('categoryname'); // Try Portuguese name first
+                        const catIdIndex = headers.indexOf('categoryid'); // Fallback to ID
+                        const typeIndex = headers.indexOf('type');
+                        const urlIndex = headers.indexOf('url');
+                        const mediaIndex = headers.indexOf('media');
+                        const ratingIndex = headers.indexOf('rating');
+                        const dateAddedIndex = headers.indexOf('dateadded');
+                        const featuredIndex = headers.indexOf('featured');
+                        const essentialIndex = headers.indexOf('essential');
+                        const badgeIndex = headers.indexOf('badge');
+
+
+                        if (idIndex === -1 || nameIndex === -1 || urlIndex === -1 ) {
+                             alert('Arquivo CSV inválido. Colunas obrigatórias ausentes: id, name, url.');
+                             return;
+                        }
+
+                        for (let i = 1; i < lines.length; i++) {
+                             const values = parseCsvRow(lines[i]); // Use parser for data rows too
+                             if (values.length < headers.length) {
+                                console.warn(`Linha ${i+1} ignorada: número de colunas (${values.length}) menor que cabeçalhos (${headers.length}). Conteúdo: ${lines[i]}`);
+                                continue; // Skip rows with fewer columns than headers
+                             }
+
+                            let category = 'others'; // Default category
+                            // Try matching by Name first, then by ID
+                             const categoryName = catNameIndex > -1 ? values[catNameIndex]?.trim().toLowerCase() : null;
+                             const categoryIdFromCsv = catIdIndex > -1 ? values[catIdIndex]?.trim().toLowerCase() : null;
+
+                             if (categoryName && categoryNameToIdMap[categoryName]) {
+                                 category = categoryNameToIdMap[categoryName];
+                             } else if (categoryIdFromCsv && CATEGORIES.some(c => c.id === categoryIdFromCsv)) {
+                                 category = categoryIdFromCsv;
+                             } else if (categoryName || categoryIdFromCsv) {
+                                 console.warn(`Categoria '${values[catNameIndex] || values[catIdIndex]}' na linha ${i+1} não encontrada. Usando 'others'.`);
+                             }
+
+                             // Handle potentially null/empty media field
+                             const mediaValue = mediaIndex > -1 ? (values[mediaIndex] || null) : null;
+
+                             const tool = {
+                                id: parseInt(values[idIndex], 10),
+                                name: values[nameIndex] || `Ferramenta ${i}`,
+                                description: descIndex > -1 ? values[descIndex] : '',
+                                category: category,
+                                type: typeIndex > -1 ? values[typeIndex]?.toLowerCase() || 'free' : 'free',
+                                url: values[urlIndex] || '#',
+                                media: mediaValue, // Assign potentially null media
+                                rating: ratingIndex > -1 ? parseFloat(values[ratingIndex]) || randomRating() : randomRating(),
+                                dateAdded: dateAddedIndex > -1 ? values[dateAddedIndex] || randomDate() : randomDate(),
+                                featured: featuredIndex > -1 ? values[featuredIndex]?.toUpperCase() === 'TRUE' : false,
+                                essential: essentialIndex > -1 ? values[essentialIndex]?.toUpperCase() === 'TRUE' : false,
+                                badge: badgeIndex > -1 ? values[badgeIndex] || null : null,
+                             };
+
+                            // Basic validation
+                            if (isNaN(tool.id) || !tool.name || !(tool.url && tool.url.startsWith('http'))) { // Ensure URL is valid
+                                console.warn(`Linha ${i+1} ignorada: dados inválidos (ID, Nome ou URL inválido/ausente). ID: ${values[idIndex]}, Nome: ${values[nameIndex]}, URL: ${values[urlIndex]}`);
+                                continue;
+                            }
+
+                            importedTools.push(tool);
+                        }
+
+                        if (importedTools.length > 0) {
+                            if (confirm(`Importar ${importedTools.length} ferramentas do CSV? (Substituirá as atuais)`)) {
+                                // --- Apply imported data and refresh UI ---
+                                tools = importedTools;
+                                appState.currentPage = 1;
+                                DOMElements.filterCategorySelect.value = 'all';
+                                DOMElements.filterTypeSelect.value = 'all';
+                                DOMElements.filterSortSelect.value = 'popular';
+                                DOMElements.mainSearchInput.value = '';
+                                if (appState.observer) appState.observer.disconnect();
+                                filterAndRenderTools(true);
+                                renderFeaturedTools();
+                                renderCategoryButtons(); // Ensure buttons reflect potentially new categories if map updated
+                                renderAdminToolsList();
+                                updateStats();
+                                setupIntersectionObserver();
+                                alert(`${importedTools.length} ferramentas importadas com sucesso via CSV!`);
+                            }
+                        } else {
+                             alert('Nenhuma ferramenta válida encontrada no arquivo CSV.');
+                        }
+
+                    } catch (err) {
+                        console.error("CSV Import failed:", err);
+                        alert('Erro ao ler ou processar o arquivo CSV. Verifique o formato e o console para detalhes.');
+                    }
+                };
+
+                reader.onerror = () => {
+                    alert('Erro ao ler o arquivo.');
+                };
+
+                reader.readAsText(file, 'UTF-8'); // Specify UTF-8 encoding
+            };
+            input.click();
+        }
+        // --- END NEW CSV ---
+
 
         // --- Admin List Rendering & Actions ---
         function renderAdminToolsList(filtered = null) { const tbody = DOMElements.adminToolsListTbody; if (!tbody) {console.error("Admin Tools List Tbody not found"); return;} tbody.innerHTML = ''; const data = (filtered || tools).sort((a, b) => (a.name || '').localeCompare(b.name || '')); if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="2" class="text-center py-4 text-text-muted">Nenhuma ferramenta.</td></tr>'; return; } const frag = document.createDocumentFragment(); data.forEach(t => { const row = document.createElement('tr'); row.className = 'hover:bg-bg-card-hover transition-colors'; row.innerHTML = `<td>${t.name || 'Sem nome'}</td><td class="actions"><button class="btn btn-secondary btn-sm btn-icon edit-tool" data-id="${t.id}" title="Editar"><i class="fas fa-edit !mr-0"></i></button><button class="btn btn-danger btn-sm btn-icon delete-tool" data-id="${t.id}" title="Excluir"><i class="fas fa-trash !mr-0"></i></button></td>`; frag.appendChild(row); }); tbody.appendChild(frag); attachAdminListActionListeners(); }
-        function attachAdminListActionListeners() { const tbody = DOMElements.adminToolsListTbody; if (!tbody) return; tbody.querySelectorAll('.delete-tool').forEach(b => { b.replaceWith(b.cloneNode(true)); b.addEventListener('click', handleDeleteTool); }); tbody.querySelectorAll('.edit-tool').forEach(b => { b.replaceWith(b.cloneNode(true)); b.addEventListener('click', handleEditTool); }); }
-        function handleDeleteTool(e) { const id = parseInt(e.currentTarget.dataset.id); const t = tools.find(x => x.id === id); if (confirm(`Excluir "${t?.name || id}"?`)) { tools = tools.filter(x => x.id !== id); appState.currentPage = 1; if (appState.observer) appState.observer.disconnect(); filterAndRenderTools(true); renderFeaturedTools(); renderAdminToolsList(); updateStats(); setupIntersectionObserver(); } }
+        function attachAdminListActionListeners() {
+            const tbody = DOMElements.adminToolsListTbody; if (!tbody) return;
+             // Use event delegation on the tbody for better performance and dynamic updates
+             tbody.addEventListener('click', function(event) {
+                const target = event.target.closest('button'); // Find the closest button clicked
+                if (!target) return; // Exit if click wasn't on a button or its icon
+
+                const toolId = parseInt(target.dataset.id);
+
+                if (target.classList.contains('delete-tool')) {
+                    handleDeleteTool(toolId);
+                } else if (target.classList.contains('edit-tool')) {
+                    // We pass the event object to handleEditTool now for consistency,
+                    // although it might not strictly need it, it's good practice.
+                    handleEditTool(event);
+                }
+            });
+        }
+
+        // Modified handleDeleteTool to accept just the ID
+        function handleDeleteTool(id) {
+             const t = tools.find(x => x.id === id);
+             if (confirm(`Excluir "${t?.name || id}"?`)) {
+                 tools = tools.filter(x => x.id !== id);
+                 appState.currentPage = 1;
+                 if (appState.observer) appState.observer.disconnect();
+                 filterAndRenderTools(true);
+                 renderFeaturedTools();
+                 renderAdminToolsList();
+                 updateStats();
+                 setupIntersectionObserver(); // Re-setup observer after deletion
+             }
+        }
 
         // --- UI & Data Population Helpers ---
         function populateCategoryFilters() { DOMElements.filterCategorySelect.innerHTML = '<option value="all">Todas Categorias</option>'; DOMElements.adminToolCategorySelect.innerHTML = ''; CATEGORIES.forEach(c => { if (c.id !== 'all') { const o = document.createElement('option'); o.value = c.id; o.textContent = c.name; DOMElements.filterCategorySelect.appendChild(o.cloneNode(true)); DOMElements.adminToolCategorySelect.appendChild(o); } }); }
         function renderCategoryButtons() { const c = DOMElements.categoryButtonsContainer; if (!c) return; c.innerHTML = ''; CATEGORIES.forEach(cat => { const b = document.createElement('button'); b.className = 'category-button'; b.dataset.categoryId = cat.id; b.innerHTML = `<i class="fas fa-${cat.icon}"></i><span>${cat.name}</span>`; b.addEventListener('click', () => handleCategoryButtonClick(cat.id)); c.appendChild(b); }); updateActiveCategoryButton('all'); }
-        function handleCategoryButtonClick(catId) { DOMElements.filterCategorySelect.value = catId; handleFilterChange(); const btn = DOMElements.categoryButtonsContainer.querySelector(`[data-category-id="${catId}"]`); btn?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
+        function handleCategoryButtonClick(catId) { DOMElements.filterCategorySelect.value = catId; handleFilterChange(); updateActiveCategoryButton(catId); const btn = DOMElements.categoryButtonsContainer.querySelector(`[data-category-id="${catId}"]`); btn?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' }); }
         function updateActiveCategoryButton(activeCatId) { DOMElements.categoryButtonsContainer?.querySelectorAll('.category-button').forEach(b => { b.classList.toggle('active', b.dataset.categoryId === activeCatId); }); }
         function renderFeaturedTools() { const c = DOMElements.featuredToolsContainer; if (!c) return; c.innerHTML = ''; const f = tools.filter(t => t.featured).slice(0, 4); DOMElements.featuredSection?.classList.toggle('hidden', f.length === 0); const frag = document.createDocumentFragment(); f.forEach((t, i) => { const card = createToolCard(t); card.style.animationDelay = `${i * 0.08}s`; card.classList.add('animate-fadeIn'); frag.appendChild(card); }); c.appendChild(frag); }
         function updateStats() { DOMElements.statTotalTools.textContent = tools.length; DOMElements.statTotalCategories.textContent = CATEGORIES.length - 1; DOMElements.statFeaturedTools.textContent = tools.filter(t => t.featured).length; DOMElements.statEssentialTools.textContent = tools.filter(t => t.essential).length; }
@@ -615,10 +948,241 @@
         // --- General Helpers ---
         const randomRating = () => (Math.random() * (5.0 - 3.5) + 3.5).toFixed(1);
         const randomDate = () => { const e = new Date(), s = new Date(); s.setFullYear(s.getFullYear() - 3); const d = new Date(s.getTime() + Math.random() * (e.getTime() - s.getTime())); return d.toISOString().split('T')[0]; };
-        const getMediaUrl = (catId, name = '') => { const c = CATEGORIES.find(x => x.id === catId) || CATEGORIES.find(x => x.id === 'others') || { keywords: 'tech' }; let k = c.keywords || 'technology,abstract'; if (name) { const w = name.toLowerCase().split(' ').filter(y => y.length > 3); if (w.length > 0) k += `,${w[0]}`; } return `https://source.unsplash.com/random/800x600/?${encodeURIComponent(k)}&sig=${Math.random()}`; };
-        function generateInitialTools(count) { const base = [ { id: 1, name: "Flux AI", desc: "IA generativa para design de hardware.", cat: "ai", type: "paid", badge: "Inovador", feat: true, url: "#", rating: 4.9, date: "2024-03-10" }, { id: 2, name: "Claude 3 Opus", desc: "Modelo de linguagem de ponta da Anthropic.", cat: "ai", type: "paid", badge: "GPT Rival", feat: true, ess: true, url: "#", rating: 4.9, date: "2024-03-05" }, { id: 3, name: "Framer Motion", desc: "Biblioteca React para animações fluidas.", cat: "developer", type: "free", badge: "Animação", feat: true, url: "#", rating: 4.7, date: "2023-11-15" }, { id: 4, name: "Linear", desc: "Gerenciamento de projetos focado em velocidade.", cat: "productivity", type: "both", badge: "Dev Choice", feat: true, ess: true, url: "#", rating: 4.8, date: "2023-10-01" }, { id: 5, name: "RunwayML Gen-2", desc: "Gere vídeos a partir de texto ou imagens com IA.", cat: "audio-video", type: "paid", badge: "Video IA", feat: true, url: "#", rating: 4.6, date: "2023-09-20" }, { id: 6, name: "Spline", desc: "Crie cenas web 3D interativas no navegador.", cat: "design", type: "both", badge: "3D Web", feat: true, url: "#", rating: 4.7, date: "2023-08-18" }, { id: 7, name: "Obsidian", desc: "Base de conhecimento pessoal em Markdown.", cat: "productivity", type: "free", ess: true, url: "#", rating: 4.9, date: "2023-05-01" }, { id: 8, name: "Arc Browser", desc: "Navegador reimaginado focado em organização.", cat: "utilities", type: "free", badge: "Navegador", feat: true, url: "#", rating: 4.7, date: "2023-04-12" }, { id: 9, name: "Perplexity AI", desc: "Motor de busca conversacional com fontes.", cat: "ai", type: "both", badge: "Busca IA", feat: true, ess: true, url: "#", rating: 4.8, date: "2023-02-25" }, { id: 10, name: "ElevenLabs", desc: "Geração e clonagem de voz com IA ultra-realista.", cat: "audio-video", type: "paid", badge: "Voz IA", feat: true, url: "#", rating: 4.8, date: "2023-01-30" }, { id: 11, name: "Photopea", desc: "Editor de fotos online avançado gratuito.", cat: "design", type: "free", ess: true, url: "#", rating: 4.6, date: "2022-11-05" }, { id: 12, name: "Replit", desc: "Ambiente de dev online instantâneo.", cat: "developer", type: "both", ess: true, url: "#", rating: 4.7, date: "2022-10-10" }, ]; tools = base.map(b => ({...b, description: b.desc, category: b.cat, featured: b.feat || false, essential: b.ess || false, dateAdded: b.date, media: getMediaUrl(b.cat, b.name)})); const existingIds = new Set(tools.map(t => t.id)); let nextId = tools.length > 0 ? Math.max(...existingIds) + 1 : 1; const numToGen = count - tools.length; const prefixes = ["Quantum", "Cyber", "Neuro", "Synth", "Data", "Echo", "Code", "Pixel", "Logic", "Flow", "Apex", "Nova", "Zenith", "Orbit", "Pulse", "Aether", "Chrono", "Helio", "Ion", "Vertex", "Cognito", "Axon", "Prism", "Rift"]; const suffixes = ["AI", "Flow", "Bot", "Kit", "Hub", "Desk", "Lab", "Grid", "Sphere", "Wave", "Forge", "Sync", "Base", "Net", "OS", "Core", "Matrix", "Link", "Stream", "Craft", "Spark", "Node", "Nexus", "Mind"]; const validTypes = ['free', 'paid', 'both']; const validCatIds = CATEGORIES.map(c => c.id).filter(id => id !== 'all'); for (let i = 0; i < numToGen; i++) { const catIdx = Math.floor(Math.random() * validCatIds.length); const catId = validCatIds[catIdx]; const cat = CATEGORIES.find(c => c.id === catId) || CATEGORIES[1]; const type = validTypes[Math.floor(Math.random() * validTypes.length)]; const feat = Math.random() < 0.05; const ess = Math.random() < 0.08; const p = prefixes[Math.floor(Math.random() * prefixes.length)]; const s = suffixes[Math.floor(Math.random() * suffixes.length)]; const name = `${p} ${s} ${i % 100}`; const desc = `Ferramenta ${name} na categoria ${cat.name}. Otimiza ${cat.keywords.split(',')[1] || 'tarefas'}. ${ess ? 'Essencial.' : ''}`; const badges = ['Novo', 'Beta', 'Popular', 'IA', 'Top Pick', 'Alpha', '⚡']; const badge = Math.random() < 0.15 ? badges[Math.floor(Math.random() * badges.length)] : null; tools.push({ id: nextId++, name, description: desc, category: cat.id, type, badge, featured: feat, essential: ess, url: "#", media: getMediaUrl(cat.id, name), rating: randomRating(), dateAdded: randomDate() }); } redistributePlatformTools(); /* Redistribute just in case */ }
-        function redistributePlatformTools() { const vt = ['free','paid','both']; const vc = CATEGORIES.map(c => c.id).filter(id => id !== 'all'); tools = tools.map(t => { if (t.type === 'platform') { t.type = vt[Math.floor(Math.random() * vt.length)]; t.category = vc[Math.floor(Math.random() * vc.length)]; } return t; }); }
-        function activateElements(els) { els.forEach(el => el?.classList.add('active', 'bg-primary', 'text-white', 'border-primary')); els.forEach(el => el?.classList.remove('bg-bg-card', 'text-text-muted', 'border-border-color')); } function deactivateElements(els) { els.forEach(el => el?.classList.remove('active', 'bg-primary', 'text-white', 'border-primary')); els.forEach(el => el?.classList.add('bg-bg-card', 'text-text-muted', 'border-border-color')); } function showElements(els) { els.forEach(el => el?.classList.remove('hidden')); } function hideElements(els) { els.forEach(el => el?.classList.add('hidden')); }
+        // Removed getMediaUrl function as default is handled directly in card functions now
+        function activateElements(els) { els.forEach(el => el?.classList.add('active', 'bg-primary', 'text-white', 'border-primary')); els.forEach(el => el?.classList.remove('bg-secondary', 'text-text-muted', 'border-border-color')); } // Adjusted to remove secondary styles
+        function deactivateElements(els) { els.forEach(el => el?.classList.remove('active', 'bg-primary', 'text-white', 'border-primary')); els.forEach(el => el?.classList.add('bg-secondary', 'text-text-muted', 'border-border-color')); } // Adjusted to add secondary styles
+        function showElements(els) { els.forEach(el => el?.classList.remove('hidden')); } function hideElements(els) { els.forEach(el => el?.classList.add('hidden')); }
+
+        // --- Data Processing for User's Input ---
+        function processAndSetToolsData() {
+            const inputData = [
+                { "ID": 1, "Título": "DeepSeek Chat", "Descrição": "Assistente de IA para comunicação inteligente", "Categoria": "Inteligência Artificial", "Tipo": "free", "Link": "https://chat.deepseek.com/" },
+                { "ID": 2, "Título": "Ilovepdf", "Descrição": "Ferramentas online para edição e conversão de PDF", "Categoria": "Utilitários", "Tipo": "both", "Link": "https://www.ilovepdf.com/" },
+                { "ID": 3, "Título": "Coolors", "Descrição": "Gerador e explorador de paletas de cores para designers", "Categoria": "Design", "Tipo": "free", "Link": "https://coolors.co/" },
+                { "ID": 4, "Título": "MacroRecorder", "Descrição": "Grava e reproduz macros para automatizar cliques e teclas", "Categoria": "Automação", "Tipo": "both", "Link": "https://macrorecorder.com/" },
+                { "ID": 5, "Título": "MyAbandonware", "Descrição": "Jogos clássicos abandonados disponíveis para download legal", "Categoria": "Jogos", "Tipo": "free", "Link": "https://www.myabandonware.com/" },
+                { "ID": 6, "Título": "SR Watson", "Descrição": "Consulta de CNPJ e investigação empresarial dinâmica", "Categoria": "Consultas e Buscas", "Tipo": "both", "Link": "https://srwatson.io/" },
+                { "ID": 7, "Título": "Ocenaudio", "Descrição": "Editor de áudio simples e eficiente para edição básica", "Categoria": "Áudio e Vídeo", "Tipo": "free", "Link": "https://www.ocenaudio.com/" },
+                { "ID": 8, "Título": "Kdenlive", "Descrição": "Editor de vídeo open-source e multiplataforma", "Categoria": "Áudio e Vídeo", "Tipo": "free", "Link": "https://kdenlive.org/" },
+                { "ID": 9, "Título": "Vdo.ninja", "Descrição": "Ferramenta para captura e transmissão de vídeo em tempo real", "Categoria": "Áudio e Vídeo", "Tipo": "free", "Link": "https://vdo.ninja/" },
+                { "ID": 10, "Título": "Audiomass", "Descrição": "Editor de áudio online com recursos avançados", "Categoria": "Áudio e Vídeo", "Tipo": "free", "Link": "https://audiomass.co/" },
+                { "ID": 11, "Título": "Radio Garden", "Descrição": "Explore rádios ao vivo de todo o mundo em um globo interativo", "Categoria": "Áudio e Vídeo", "Tipo": "free", "Link": "https://radio.garden/visit/olivenca-al/2PMgc5oK" },
+                { "ID": 12, "Título": "Radiooooo", "Descrição": "Ouça músicas por década e país em um player vintage", "Categoria": "Áudio e Vídeo", "Tipo": "free", "Link": "https://app.radiooooo.com/" },
+                { "ID": 13, "Título": "AutoHotkey", "Descrição": "Linguagem de script para automação de tarefas no Windows", "Categoria": "Automação", "Tipo": "free", "Link": "https://www.autohotkey.com/" },
+                { "ID": 14, "Título": "IFTTT", "Descrição": "Conecta apps e dispositivos para criar automações", "Categoria": "Automação", "Tipo": "both", "Link": "https://ifttt.com/" },
+                { "ID": 15, "Título": "Replit", "Descrição": "IDE online com suporte a automação via scripts em múltiplas linguagens", "Categoria": "Automação", "Tipo": "both", "Link": "https://replit.com/" }, // Changed Cat to Automation from Dev
+                { "ID": 16, "Título": "Browser Automation Studio", "Descrição": "Estúdio de Automação avançada para navegadores", "Categoria": "Automação", "Tipo": "both", "Link": "https://bablosoft.com/shop/BrowserAutomationStudio" },
+                { "ID": 17, "Título": "N8N", "Descrição": "Automação flexível do fluxo de trabalho de IA entre apps", "Categoria": "Automação", "Tipo": "free", "Link": "https://n8n.io/" },
+                { "ID": 18, "Título": "TweetDelete", "Descrição": "Ferramenta para apagar tweets em massa", "Categoria": "Automação", "Tipo": "both", "Link": "https://tweetdelete.net/" }, // Changed Cat to Automation from Social
+                { "ID": 19, "Título": "Klaviyo", "Descrição": "Automação de e-mails e SMS com segmentação avançada", "Categoria": "Automação", "Tipo": "both", "Link": "https://www.klaviyo.com/" }, // Changed Cat to Automation from Ecomm/Marketing
+                { "ID": 20, "Título": "Solidity", "Descrição": "Linguagem de programação dominante para contratos inteligentes na Ethereum", "Categoria": "Blockchain", "Tipo": "free", "Link": "https://soliditylang.org/" },
+                { "ID": 21, "Título": "Truffle Suite", "Descrição": "Framework completo para desenvolvimento Ethereum", "Categoria": "Blockchain", "Tipo": "free", "Link": "https://archive.trufflesuite.com/" },
+                { "ID": 22, "Título": "Metamask", "Descrição": "Carteira digital e gateway para interação com dApps via navegadores", "Categoria": "Blockchain", "Tipo": "free", "Link": "https://metamask.io/" },
+                { "ID": 23, "Título": "IPFS", "Descrição": "Armazenamento descentralizado para dApps", "Categoria": "Blockchain", "Tipo": "free", "Link": "https://ipfs.tech/" },
+                { "ID": 24, "Título": "TatoDesk", "Descrição": "Plataforma de chat ao vivo para atendimento ao cliente", "Categoria": "Comunicação", "Tipo": "free", "Link": "https://tatodesk.com/" },
+                { "ID": 25, "Título": "ManyChat", "Descrição": "Ferramenta de automação para chatbots no Facebook Messenger", "Categoria": "Comunicação", "Tipo": "free", "Link": "https://manychat.com/" },
+                { "ID": 26, "Título": "ClickUp", "Descrição": "Plataforma de produtividade e colaboração em equipe com chat integrado", "Categoria": "Comunicação", "Tipo": "both", "Link": "https://clickup.com/" }, // Changed Cat to Communication from Productivity
+                { "ID": 27, "Título": "Slack", "Descrição": "Aplicativo de mensagens para equipes", "Categoria": "Comunicação", "Tipo": "both", "Link": "https://slack.com/intl/pt-br/" },
+                { "ID": 28, "Título": "Zoom", "Descrição": "Plataforma de videoconferências", "Categoria": "Comunicação", "Tipo": "both", "Link": "https://www.zoom.com/pt" },
+                { "ID": 29, "Título": "Google Workspace", "Descrição": "E-mail, videoconferências, armazenamento e documentos colaborativos", "Categoria": "Comunicação", "Tipo": "free", "Link": "https://workspace.google.com/" }, // Changed type to 'free' (assuming base plan)
+                { "ID": 30, "Título": "Google Acadêmico", "Descrição": "Busca artigos acadêmicos, teses, livros e citações", "Categoria": "Consultas e Buscas", "Tipo": "free", "Link": "https://scholar.google.com/" },
+                { "ID": 31, "Título": "SciSpace", "Descrição": "Ferramenta de revisão de literatura com IA", "Categoria": "Consultas e Buscas", "Tipo": "free", "Link": "https://scispace.com/" },
+                { "ID": 32, "Título": "Wayback Machine", "Descrição": "Acessa versões históricas de páginas da web", "Categoria": "Consultas e Buscas", "Tipo": "free", "Link": "https://web.archive.org/" },
+                { "ID": 33, "Título": "TinEye", "Descrição": "Busca reversa de imagens", "Categoria": "Consultas e Buscas", "Tipo": "free", "Link": "https://www.tineye.com/" },
+                { "ID": 34, "Título": "Wolfram Alpha", "Descrição": "Responde perguntas com base em dados estruturados", "Categoria": "Consultas e Buscas", "Tipo": "both", "Link": "https://www.wolframalpha.com/" },
+                { "ID": 35, "Título": "Whatsmyname.app", "Descrição": "Verifica nomes de usuário em diversas plataformas", "Categoria": "Consultas e Buscas", "Tipo": "free", "Link": "https://whatsmyname.app/" },
+                { "ID": 36, "Título": "Yandex Images", "Descrição": "Busca de imagens alternativa com reconhecimento visual", "Categoria": "Consultas e Buscas", "Tipo": "free", "Link": "https://yandex.com/images/" },
+                { "ID": 37, "Título": "Remove.bg", "Descrição": "Remove fundos de imagens automaticamente com IA", "Categoria": "Design", "Tipo": "both", "Link": "https://www.remove.bg/pt-br" },
+                { "ID": 38, "Título": "Pexels", "Descrição": "Banco de imagens e vídeos totalmente livre e gratuito", "Categoria": "Design", "Tipo": "free", "Link": "https://www.pexels.com/pt-br/" },
+                { "ID": 39, "Título": "TinyPNG", "Descrição": "Compressor inteligente de imagens PNG e JPEG", "Categoria": "Design", "Tipo": "both", "Link": "https://tinypng.com/" },
+                { "ID": 40, "Título": "Photopea", "Descrição": "Editor de imagens grátis online similar ao Photoshop", "Categoria": "Design", "Tipo": "free", "Link": "https://www.photopea.com/" },
+                { "ID": 41, "Título": "Fontjoy", "Descrição": "Gerador de combinações de fontes harmoniosas", "Categoria": "Design", "Tipo": "free", "Link": "https://fontjoy.com/" },
+                { "ID": 42, "Título": "Icons8", "Descrição": "Biblioteca de ícones e ilustrações gratuitas para desenvolvedores", "Categoria": "Design", "Tipo": "both", "Link": "https://icons8.com/" },
+                { "ID": 43, "Título": "Colorable", "Descrição": "Teste de contraste de cores para acessibilidade", "Categoria": "Design", "Tipo": "free", "Link": "https://colorable.jxnblk.com/" },
+                { "ID": 44, "Título": "Iloveimg", "Descrição": "Ferramentas online para edição de imagens", "Categoria": "Design", "Tipo": "both", "Link": "https://www.iloveimg.com/" },
+                { "ID": 45, "Título": "Picsweep", "Descrição": "Organizador e limpador de fotos duplicadas", "Categoria": "Design", "Tipo": "both", "Link": "https://play.google.com/store/apps/details?id=ee.simplesoft.picsweep" }, // Kept Cat Design (image utility)
+                { "ID": 46, "Título": "Excalidraw", "Descrição": "Ferramenta de desenho vetorial colaborativo", "Categoria": "Design", "Tipo": "free", "Link": "https://excalidraw.com/" },
+                { "ID": 47, "Título": "Duolingo", "Descrição": "Aplicativo gratuito para aprendizado de idiomas", "Categoria": "Educação e Cursos", "Tipo": "both", "Link": "https://www.duolingo.com/" },
+                { "ID": 48, "Título": "Coursera", "Descrição": "Cursos online de universidades e empresas renomadas", "Categoria": "Educação e Cursos", "Tipo": "both", "Link": "https://www.coursera.org/" },
+                { "ID": 49, "Título": "Khan Academy", "Descrição": "Plataforma gratuita de ensino para todas as idades", "Categoria": "Educação e Cursos", "Tipo": "free", "Link": "https://www.khanacademy.org/" },
+                { "ID": 50, "Título": "Sinônimos.com.br", "Descrição": "Dicionário online de sinônimos e antônimos", "Categoria": "Educação e Cursos", "Tipo": "free", "Link": "https://www.sinonimos.com.br/" },
+                { "ID": 51, "Título": "Grammarly", "Descrição": "Ferramenta de correção gramatical e de estilo", "Categoria": "Educação e Cursos", "Tipo": "both", "Link": "https://www.grammarly.com/" }, // Changed Cat to Education from Writing
+                { "ID": 52, "Título": "Hemingway App", "Descrição": "Editor que ajuda a melhorar a clareza de textos", "Categoria": "Educação e Cursos", "Tipo": "both", "Link": "https://hemingwayapp.com/" }, // Changed Cat to Education from Writing
+                { "ID": 53, "Título": "Aprenda+", "Descrição": "Cursos em estrutura de dados, lógica e fundamentos de TI", "Categoria": "Educação e Cursos", "Tipo": "free", "Link": "https://aprendamais.mec.gov.br/" },
+                { "ID": 54, "Título": "Sebrae", "Descrição": "Tecnologia aplicada ao empreendedorismo e gestão de negócios digitais", "Categoria": "Educação e Cursos", "Tipo": "free", "Link": "https://sebrae.com.br/sites/PortalSebrae" },
+                { "ID": 55, "Título": "Recode", "Descrição": "Inclusão digital com cursos em programação, segurança e análise de dados", "Categoria": "Educação e Cursos", "Tipo": "both", "Link": "https://recode.org.br/" },
+                { "ID": 56, "Título": "Dio", "Descrição": "Desenvolvimento de software, bootcamps práticos e comunidade dev", "Categoria": "Educação e Cursos", "Tipo": "both", "Link": "https://www.dio.me/" },
+                { "ID": 57, "Título": "Fundação Bradesco", "Descrição": "Cursos de programação (Python, Java, HTML/CSS), redes e governança TI", "Categoria": "Educação e Cursos", "Tipo": "free", "Link": "https://www.ev.org.br/" },
+                { "ID": 58, "Título": "FGV", "Descrição": "Cursos em tecnologia, gestão e ciência de dados, certificação gratuita", "Categoria": "Educação e Cursos", "Tipo": "both", "Link": "https://educacao-executiva.fgv.br/sp/sao-paulo" },
+                { "ID": 59, "Título": "Dividendos.me", "Descrição": "Acompanhamento de dividendos e investimentos", "Categoria": "Finanças", "Tipo": "free", "Link": "https://play.google.com/store/apps/details?id=com.dividendos.dividendosme" },
+                { "ID": 60, "Título": "Venda Fácil", "Descrição": "Sistema de gestão para pequenos comércios e negócios", "Categoria": "Finanças", "Tipo": "both", "Link": "https://play.google.com/store/apps/details?id=com.RodSoftware.vendafacil" }, // Changed Cat to Finance from Ecomm
+                { "ID": 61, "Título": "XE Currency", "Descrição": "Conversor de moedas e taxas de câmbio em tempo real", "Categoria": "Finanças", "Tipo": "free", "Link": "https://www.xe.com/" },
+                { "ID": 62, "Título": "Minhas Economias", "Descrição": "Gestão de orçamento pessoal, categorização de gastos e relatórios", "Categoria": "Finanças", "Tipo": "free", "Link": "https://minhaseconomias.com.br/" },
+                { "ID": 63, "Título": "Organizze", "Descrição": "Controle de conta bancária, cartão e planejamento com alerta", "Categoria": "Finanças", "Tipo": "both", "Link": "https://www.organizze.com.br/" },
+                { "ID": 64, "Título": "Money Lover", "Descrição": "Rastreamento de gastos, orçamento por categorias e relatórios visuais", "Categoria": "Finanças", "Tipo": "free", "Link": "https://moneylover.me" },
+                { "ID": 65, "Título": "Invoice Ninja", "Descrição": "Sistema de faturamento e gestão financeira para autônomos", "Categoria": "Finanças", "Tipo": "both", "Link": "https://invoiceninja.com/" },
+                { "ID": 66, "Título": "GeoSpy", "Descrição": "Identifique a localização de fotos usando inteligência artificial", "Categoria": "Geolocalização", "Tipo": "both", "Link": "https://geospy.ai/" },
+                { "ID": 67, "Título": "Flightradar24", "Descrição": "Acompanhe voos em tempo real em um mapa interativo", "Categoria": "Geolocalização", "Tipo": "free", "Link": "https://www.flightradar24.com/-9.23,-37.38/6" },
+                { "ID": 68, "Título": "Qgis", "Descrição": "Software de código aberto para análise geoespacial avançada", "Categoria": "Geolocalização", "Tipo": "free", "Link": "https://qgis.org/" },
+                { "ID": 69, "Título": "Windy", "Descrição": "Previsão do tempo com mapas interativos de ventos", "Categoria": "Geolocalização", "Tipo": "free", "Link": "https://www.windy.com/?-9.524,-37.313,13" },
+                { "ID": 70, "Título": "Rome2rio", "Descrição": "Planeje rotas e compare opções de transporte entre locais", "Categoria": "Geolocalização", "Tipo": "free", "Link": "https://www.rome2rio.com/" },
+                { "ID": 71, "Título": "Here WeGo", "Descrição": "Navegação com rotas otimizadas e mapas offline", "Categoria": "Geolocalização", "Tipo": "free", "Link": "https://wego.here.com/" },
+                { "ID": 72, "Título": "Receita Federal (CPF)", "Descrição": "Consulta e impressão de comprovante de CPF", "Categoria": "Serviços do Governo", "Tipo": "free", "Link": "https://servicos.receita.fazenda.gov.br/Servicos/CPF/ImpressaoComprovante/ConsultaImpressao.asp" },
+                { "ID": 73, "Título": "BCB Registrato", "Descrição": "Consulta de dívidas e informações bancárias no Banco Central", "Categoria": "Serviços do Governo", "Tipo": "free", "Link": "https://www.bcb.gov.br/meubc/registrato" },
+                { "ID": 74, "Título": "Consumidor.gov.br", "Descrição": "Plataforma de reclamações do governo federal", "Categoria": "Serviços do Governo", "Tipo": "free", "Link": "https://www.consumidor.gov.br/pages/principal/?1742832916394" },
+                { "ID": 75, "Título": "Meu INSS", "Descrição": "Solicitação de aposentadorias, perícias, consulta de benefícios", "Categoria": "Serviços do Governo", "Tipo": "free", "Link": "https://meu.inss.gov.br/" },
+                { "ID": 76, "Título": "Receita Federal (e-CAC)", "Descrição": "Declaração IR, certidões, consulta débitos fiscais", "Categoria": "Serviços do Governo", "Tipo": "free", "Link": "https://www.gov.br/receitafederal/pt-br" },
+                { "ID": 77, "Título": "Sistema eSocial", "Descrição": "Unificação de obrigações trabalhistas, previdenciárias e fiscais", "Categoria": "Serviços do Governo", "Tipo": "free", "Link": "https://www.gov.br/esocial/pt-br" },
+                { "ID": 78, "Título": "Metasploit Framework", "Descrição": "Framework de testes de penetração para exploração de vulnerabilidades", "Categoria": "Hacking", "Tipo": "free", "Link": "https://www.metasploit.com" },
+                { "ID": 79, "Título": "Burp Suite", "Descrição": "Scanner de segurança para aplicações web", "Categoria": "Hacking", "Tipo": "free", "Link": "https://portswigger.net/burp/communitydownload" },
+                { "ID": 80, "Título": "Aircrack-ng", "Descrição": "Quebra de criptografia Wi-Fi (WEP/WPA/WPA2)", "Categoria": "Hacking", "Tipo": "free", "Link": "https://www.aircrack-ng.org/" },
+                { "ID": 81, "Título": "John the Ripper", "Descrição": "Quebra de senhas via força bruta e dicionário", "Categoria": "Hacking", "Tipo": "free", "Link": "https://www.openwall.com/john/" },
+                { "ID": 82, "Título": "SQLMap", "Descrição": "Automatização de exploração de vulnerabilidades SQL Injection", "Categoria": "Hacking", "Tipo": "free", "Link": "https://sqlmap.org/" },
+                { "ID": 83, "Título": "OWASP ZAP", "Descrição": "Scanner de vulnerabilidades em aplicações web", "Categoria": "Hacking", "Tipo": "free", "Link": "https://www.zaproxy.org/" },
+                { "ID": 84, "Título": "THC Hydra", "Descrição": "Ataques de força bruta em serviços de rede", "Categoria": "Hacking", "Tipo": "free", "Link": "https://sectools.org/tool/hydra/" },
+                { "ID": 85, "Título": "Maltego", "Descrição": "Inteligência de código aberto e análise forense digital", "Categoria": "Hacking", "Tipo": "both", "Link": "https://www.maltego.com/" },
+                { "ID": 86, "Título": "Nikto", "Descrição": "Scanner de vulnerabilidades em servidores web", "Categoria": "Hacking", "Tipo": "free", "Link": "https://github.com/sullo/nikto" },
+                { "ID": 87, "Título": "ChatGPT", "Descrição": "Assistente de IA para diversas tarefas", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://chat.openai.com/" },
+                { "ID": 88, "Título": "Synthesia", "Descrição": "Criação de vídeos com avatares de IA", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://www.synthesia.io/?r=0" },
+                { "ID": 89, "Título": "Midjourney", "Descrição": "Crie imagens incríveis com IA", "Categoria": "Inteligência Artificial", "Tipo": "paid", "Link": "https://www.midjourney.com/" },
+                { "ID": 90, "Título": "Claude.ai", "Descrição": "Assistente de IA para comunicação avançada", "Categoria": "Inteligência Artificial", "Tipo": "free", "Link": "https://claude.ai/" },
+                { "ID": 91, "Título": "Perplexity AI", "Descrição": "Assistente de pesquisa com respostas precisas e fontes verificadas", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://www.perplexity.ai/" },
+                { "ID": 92, "Título": "Wolfram Alpha AI", "Descrição": "Motor de conhecimento computacional para cálculos complexos (AI)", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://www.wolframalpha.com/" }, // Duplicate ID 34, keeping as IA here with modified name
+                { "ID": 93, "Título": "ElevenLabs", "Descrição": "Geração de vozes realistas com IA para áudios e narrações", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://elevenlabs.io/" },
+                { "ID": 94, "Título": "Photomath", "Descrição": "Resolução de problemas matemáticos com reconhecimento de câmera", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://photomath.com/" },
+                { "ID": 95, "Título": "NanoNets", "Descrição": "Plataforma de IA para automação de processamento de documentos", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://nanonets.com/" },
+                { "ID": 96, "Título": "Hugging Face Spaces", "Descrição": "Repositório de modelos de IA open-source para desenvolvedores", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://huggingface.co/spaces" },
+                { "ID": 97, "Título": "Pika.style", "Descrição": "Geração e edição de vídeos usando comandos de texto", "Categoria": "Inteligência Artificial", "Tipo": "both", "Link": "https://pika.style/" },
+                { "ID": 98, "Título": "Pointer Pointer", "Descrição": "Jogo curioso que encontra imagens de pessoas apontando para seu cursor", "Categoria": "Jogos", "Tipo": "free", "Link": "https://pointerpointer.com/" },
+                { "ID": 99, "Título": "Geoguessr", "Descrição": "Desafio geográfico que testa seu conhecimento de localização", "Categoria": "Jogos", "Tipo": "both", "Link": "https://www.geoguessr.com/" },
+                { "ID": 100, "Título": "Tibia", "Descrição": "Experiência única de RPG online", "Categoria": "Jogos", "Tipo": "both", "Link": "https://www.tibia.com/mmorpg/free-multiplayer-online-role-playing-game.php" },
+                { "ID": 101, "Título": "Parsec", "Descrição": "Streaming de jogos em tempo real com baixa latência", "Categoria": "Jogos", "Tipo": "both", "Link": "https://parsec.app/" },
+                { "ID": 102, "Título": "OBS Studio", "Descrição": "Software livre para captura e transmissão ao vivo de gameplay", "Categoria": "Jogos", "Tipo": "free", "Link": "https://obsproject.com/" }, // Changed Cat to Games from Audio/Video
+                { "ID": 103, "Título": "Trello", "Descrição": "Quadros Kanban para organização de projetos e tarefas", "Categoria": "Produtividade", "Tipo": "both", "Link": "https://trello.com/" },
+                { "ID": 104, "Título": "To Do List", "Descrição": "Ferramenta simples para organizar tarefas do dia a dia", "Categoria": "Produtividade", "Tipo": "both", "Link": "https://play.google.com/store/apps/details?id=com.splendapps.splendo" },
+                { "ID": 105, "Título": "Calendly", "Descrição": "Agendamento automático de reuniões e compromissos", "Categoria": "Produtividade", "Tipo": "both", "Link": "https://calendly.com/" },
+                { "ID": 106, "Título": "Miro", "Descrição": "Quadros virtuais colaborativos para brainstorming", "Categoria": "Produtividade", "Tipo": "both", "Link": "https://miro.com/" },
+                { "ID": 107, "Título": "Snipd", "Descrição": "Organize e aproveite podcasts com recortes inteligentes", "Categoria": "Produtividade", "Tipo": "both", "Link": "https://www.snipd.com/" },
+                { "ID": 108, "Título": "Tactiq.io", "Descrição": "Transcrição em tempo real de reuniões no Google Meet e Zoom", "Categoria": "Produtividade", "Tipo": "both", "Link": "https://tactiq.io/" },
+                { "ID": 109, "Título": "Nmap", "Descrição": "Mapeamento de redes, varredura de portas e detecção", "Categoria": "Redes", "Tipo": "free", "Link": "https://nmap.org/" },
+                { "ID": 110, "Título": "Wireshark", "Descrição": "Análise avançada de tráfego de rede em tempo real", "Categoria": "Redes", "Tipo": "free", "Link": "https://www.wireshark.org/" },
+                { "ID": 111, "Título": "Zabbix", "Descrição": "Solução de monitoramento de rede open-source", "Categoria": "Redes", "Tipo": "free", "Link": "https://www.zabbix.com/" },
+                { "ID": 112, "Título": "Gns3", "Descrição": "Simulador de redes para virtualização de infraestrutura", "Categoria": "Redes", "Tipo": "both", "Link": "https://www.gns3.com/" },
+                { "ID": 113, "Título": "Kickidler", "Descrição": "Software de monitoramento de rede e produtividade", "Categoria": "Redes", "Tipo": "both", "Link": "https://www.kickidler.com/" },
+                { "ID": 114, "Título": "Cisco NetAcad", "Descrição": "Plataforma educacional em redes de computadores", "Categoria": "Redes", "Tipo": "both", "Link": "https://www.netacad.com/" },
+                { "ID": 115, "Título": "DNSChecker", "Descrição": "Ferramenta de análise e propagação de DNS", "Categoria": "Redes", "Tipo": "free", "Link": "https://dnschecker.org/" },
+                { "ID": 116, "Título": "Nike Training Club", "Descrição": "Treinos em casa, planos personalizados", "Categoria": "Saúde e Bem Estar", "Tipo": "free", "Link": "https://www.nike.com/ntc-app" },
+                { "ID": 117, "Título": "Google Fit", "Descrição": "Rastreamento de passos, corrida, ciclismo e métricas", "Categoria": "Saúde e Bem Estar", "Tipo": "free", "Link": "https://www.google.com/fit/" },
+                { "ID": 118, "Título": "WaterMinder", "Descrição": "Lembretes para beber água, cálculo de metas diárias", "Categoria": "Saúde e Bem Estar", "Tipo": "both", "Link": "https://waterminder.com/" },
+                { "ID": 119, "Título": "Flo", "Descrição": "Acompanhamento menstrual, dicas de saúde reprodutiva", "Categoria": "Saúde e Bem Estar", "Tipo": "both", "Link": "https://flo.health/" },
+                { "ID": 120, "Título": "Sleep Cycle", "Descrição": "Análise de padrões de sono, despertador inteligente", "Categoria": "Saúde e Bem Estar", "Tipo": "both", "Link": "https://sleepcycle.com/" },
+                { "ID": 121, "Título": "Headspace", "Descrição": "Sessões de meditação para ansiedade, sono e foco", "Categoria": "Saúde e Bem Estar", "Tipo": "both", "Link": "https://www.headspace.com/pt" },
+                { "ID": 122, "Título": "MyFitnessPal", "Descrição": "Contagem de calorias, banco de dados de alimentos", "Categoria": "Saúde e Bem Estar", "Tipo": "both", "Link": "https://www.myfitnesspal.com/pt" },
+                { "ID": 123, "Título": "EatThisMuch", "Descrição": "Planejador de dietas e cardápios personalizados", "Categoria": "Saúde e Bem Estar", "Tipo": "both", "Link": "https://www.eatthismuch.com/" },
+                { "ID": 124, "Título": "Bitwarden", "Descrição": "Gerenciador e controle de senhas open-source e seguro", "Categoria": "Segurança e Privacidade", "Tipo": "both", "Link": "https://bitwarden.com/" },
+                { "ID": 125, "Título": "Proton Mail", "Descrição": "Serviço de e-mail com criptografia de ponta a ponta", "Categoria": "Segurança e Privacidade", "Tipo": "both", "Link": "https://proton.me/mail" },
+                { "ID": 126, "Título": "Temp-Mail", "Descrição": "E-mail temporário e descartável para cadastros", "Categoria": "Segurança e Privacidade", "Tipo": "both", "Link": "https://temp-mail.org/" },
+                { "ID": 127, "Título": "VirusTotal", "Descrição": "Scanner de arquivos e URLs para detecção de malware", "Categoria": "Segurança e Privacidade", "Tipo": "free", "Link": "https://www.virustotal.com/" },
+                { "ID": 128, "Título": "Tails", "Descrição": "Focado em privacidade e anonimato, ideal para evitar rastreamento", "Categoria": "Segurança e Privacidade", "Tipo": "free", "Link": "https://tails.net/" },
+                { "ID": 129, "Título": "PrivacyTools.io", "Descrição": "Recursos para proteção de privacidade digital", "Categoria": "Segurança e Privacidade", "Tipo": "free", "Link": "https://www.privacytools.io/" },
+                { "ID": 130, "Título": "Google Lens", "Descrição": "Pesquisa visual usando sua câmera ou imagens", "Categoria": "Utilitários", "Tipo": "free", "Link": "https://lens.google/" },
+                { "ID": 131, "Título": "Notion", "Descrição": "Tudo em um só lugar: notas, tarefas e bancos de dados", "Categoria": "Utilitários", "Tipo": "free", "Link": "https://www.notion.so/" }, // Changed Cat to Utilities from Productivity
+                { "ID": 132, "Título": "CamScanner", "Descrição": "Digitalizador de arquivos e documentos via smartphone", "Categoria": "Utilitários", "Tipo": "both", "Link": "https://www.camscanner.com/" },
+                { "ID": 133, "Título": "Zamzar", "Descrição": "Conversor online de arquivos em diversos formatos", "Categoria": "Utilitários", "Tipo": "both", "Link": "https://www.zamzar.com/" },
+                { "ID": 134, "Título": "12ft.io", "Descrição": "Removedor de paywalls para visualizar artigos bloqueados", "Categoria": "Utilitários", "Tipo": "free", "Link": "https://12ft.io/" },
+                { "ID": 135, "Título": "PDF24 Tools", "Descrição": "Suíte completa para edição e conversão de PDFs", "Categoria": "Utilitários", "Tipo": "free", "Link": "https://tools.pdf24.org/pt/" },
+                { "ID": 136, "Título": "StackEdit", "Descrição": "Editor Markdown online com pré-visualização em tempo real", "Categoria": "Utilitários", "Tipo": "free", "Link": "https://stackedit.io/" },
+                { "ID": 137, "Título": "Catho", "Descrição": "Plataforma de empregos e oportunidades profissionais", "Categoria": "Outros", "Tipo": "both", "Link": "https://www.catho.com.br/" },
+                { "ID": 138, "Título": "Ninite", "Descrição": "Instalador múltiplo de programas essenciais", "Categoria": "Outros", "Tipo": "free", "Link": "https://ninite.com/" },
+                { "ID": 139, "Título": "Magie.com.br", "Descrição": "Gerador de documentos e contratos automáticos", "Categoria": "Outros", "Tipo": "both", "Link": "https://magie.com.br/" },
+                { "ID": 140, "Título": "Talo.ai", "Descrição": "Plataforma de análise de dados para negócios", "Categoria": "Outros", "Tipo": "both", "Link": "https://talo.ai/" }, // Could be 'data-analysis'
+                { "ID": 141, "Título": "Digitar-online.com", "Descrição": "Teste e melhore sua velocidade de digitação", "Categoria": "Outros", "Tipo": "free", "Link": "https://digitar-online.com/" }, // Could be 'education' or 'utilities'
+                { "ID": 142, "Título": "Birthday Calendar", "Descrição": "Organizador de aniversários e datas importantes", "Categoria": "Outros", "Tipo": "both", "Link": "https://play.google.com/store/apps/details?id=dev.cwolf.birthdaycalendar" }, // Could be 'productivity'
+                { "ID": 143, "Título": "MyNoise", "Descrição": "Gerador de sons ambientes para concentração e relaxamento", "Categoria": "Outros", "Tipo": "both", "Link": "https://mynoise.net/" } // Could be 'health' or 'productivity'
+            ];
+
+
+            // Mapping from Portuguese category name to English ID used in CATEGORIES array
+            const portugueseToEnglishCategoryMap = {
+                "Inteligência Artificial": "ai",
+                "Utilitários": "utilities",
+                "Design": "design",
+                "Automação": "automation",
+                "Jogos": "games",
+                "Consultas e Buscas": "search", // Mapped to 'search'
+                "Áudio e Vídeo": "audio-video",
+                "Blockchain": "blockchain",
+                "Comunicação": "communication",
+                "Educação e Cursos": "education", // Mapped to 'education'
+                "Finanças": "finance",
+                "Geolocalização": "geolocation", // Mapped to 'geolocation'
+                "Serviços do Governo": "government", // Mapped to 'government'
+                "Hacking": "hacking", // Mapped to 'hacking'
+                "Produtividade": "productivity",
+                "Redes": "network", // Mapped to 'network'
+                "Saúde e Bem Estar": "health", // Mapped to 'health'
+                "Segurança e Privacidade": "security", // Mapped to 'security'
+                "Outros": "others"
+                // Add more mappings if new categories appear in input
+            };
+
+            let currentId = 1; // Start ID counter
+            const seenIds = new Set();
+            const processedTools = [];
+
+            inputData.forEach(item => {
+                let uniqueId = item.ID;
+                 // Handle duplicate or missing IDs from input
+                 if (uniqueId === undefined || uniqueId === null || seenIds.has(uniqueId) || uniqueId === 34 && item.Título.includes('AI')) { // Specifically handle the Wolfram Alpha AI duplicate
+                     uniqueId = tools.length > 0 ? Math.max(...tools.map(t => t.id), ...processedTools.map(t => t.id)) + 1 : currentId;
+                      while (seenIds.has(uniqueId)) {
+                          uniqueId++;
+                      }
+                      console.warn(`Adjusted ID for "${item.Título}". Original: ${item.ID}, New: ${uniqueId}`);
+                 }
+                 seenIds.add(uniqueId);
+                 currentId = Math.max(currentId, uniqueId + 1);
+
+
+                const mappedCategory = portugueseToEnglishCategoryMap[item.Categoria] || 'others'; // Default to 'others' if not found
+
+                processedTools.push({
+                    id: uniqueId, // Use the potentially adjusted unique ID
+                    name: item.Título,
+                    description: item.Descrição,
+                    category: mappedCategory,
+                    type: item.Tipo, // Assuming 'free', 'paid', 'both' match
+                    url: item.Link,
+                    media: null, // Let card functions handle default/fallback
+                    rating: randomRating(), // Generate random rating
+                    dateAdded: randomDate(), // Generate random date added
+                    featured: false, // Default value
+                    essential: false, // Default value
+                    badge: null // Default value
+                });
+            });
+
+             tools = processedTools; // Assign the processed list
+
+            // Optional: Mark first few items as featured or essential for demonstration
+             const markFeatured = (id) => { const tool = tools.find(t => t.id === id); if (tool) tool.featured = true; };
+             const markEssential = (id) => { const tool = tools.find(t => t.id === id); if (tool) tool.essential = true; };
+
+             markFeatured(1); // Deepseek
+             markFeatured(3); // Coolors
+             markFeatured(87); // ChatGPT
+             markEssential(87); // ChatGPT
+             markEssential(91); // Perplexity AI
+             markEssential(40); // Photopea
+             markEssential(131); // Notion
+             markEssential(2); // ilovepdf
+
+             // Sort by ID initially, if desired (optional)
+             tools.sort((a, b) => a.id - b.id);
+
+             console.log(`Processed ${tools.length} tools from user data.`);
+        }
+
 
          // --- Card Creation Functions (Robust Versions with Fallbacks) ---
          function createToolCard(tool = {}) {
@@ -628,20 +1192,25 @@
              const isVideo = tool.media && (tool.media.includes('.mp4') || tool.media.includes('.webm'));
              const categoryInfo = CATEGORIES.find(c => c.id === tool.category) || CATEGORIES.find(c => c.id === 'others') || { id: 'others', name: 'Outros', icon: 'cog', keywords: 'tool' };
              const safeUrl = tool.url && tool.url.startsWith('http') ? tool.url : '#';
-             const mediaUrl = tool.media || getMediaUrl(categoryInfo.id, tool.name);
+             // MODIFIED: Use DEFAULT_IMAGE_URL first, then fallback
+             const mediaUrl = tool.media || DEFAULT_IMAGE_URL;
+             const fallbackMediaUrl = `https://source.unsplash.com/random/800x600/?abstract,technology&sig=${Math.random()}`; // Final fallback
+             // END MODIFICATION
              const toolName = tool.name || 'Ferramenta Sem Nome';
              const toolDesc = tool.description || 'Sem descrição disponível.';
              const toolRating = tool.rating || 'N/A';
 
              // Sanitize potentially user-provided strings for attributes like title, alt
-             const safeToolName = toolName.replace(/"/g, '"');
-             const safeToolDesc = toolDesc.replace(/"/g, '"');
+             const safeToolName = toolName.replace(/"/g, '&quot;'); // Escape quotes for HTML attributes
+             const safeToolDesc = toolDesc.replace(/"/g, '&quot;');
 
              card.innerHTML = `
-                 <a href="${safeUrl}" target="_blank" rel="noopener noreferrer">
+                 <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="group flex flex-col h-full">
                     <div class="relative tool-media-container">
                         ${isVideo ? `<video src="${mediaUrl}" class="absolute inset-0 w-full h-full object-cover" loop muted playsinline disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback" aria-label="${safeToolName} video preview"></video>`
-                                 : `<img src="${mediaUrl}" alt="${safeToolName} preview image" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='https://source.unsplash.com/random/800x600/?abstract,technology&sig=${Math.random()}';">`}
+                                 // MODIFIED: Added onerror fallback
+                                 : `<img src="${mediaUrl}" alt="${safeToolName} preview image" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='${fallbackMediaUrl}';">`}
+                                 // END MODIFICATION
                          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-75 group-hover:opacity-90 transition-opacity duration-300"></div>
                          <div class="absolute top-2 right-2 z-10"><span class="${typeClass} tag">${typeText}</span></div>
                          ${tool.badge ? `<div class="absolute top-2 left-2 z-10"><span class="tag-badge tag">${tool.badge}</span></div>` : ''}
@@ -652,13 +1221,14 @@
                     </div>
                      <div class="p-4 md:p-5 flex flex-col flex-grow">
                         <h4 class="text-md lg:text-lg font-bold mb-1.5 text-text-heading group-hover:text-accent transition-colors duration-300 truncate" title="${safeToolName}">${toolName}</h4>
-                         <p class="text-text-muted text-sm mb-4 flex-grow line-clamp-3">${toolDesc}</p>
+                         <p class="text-text-muted text-sm mb-4 flex-grow line-clamp-3">${toolDesc}</p> <!-- Use original description for display -->
                          <div class="mt-auto pt-3 border-t border-border-color"><span class="tag-category tag"><i class="fas fa-${categoryInfo.icon || 'cog'} mr-1.5 text-xs opacity-75"></i>${categoryInfo.name || 'Outros'}</span></div>
                      </div>
                  </a>`;
              if (isVideo) { const video = card.querySelector('video'); if(video){ card.addEventListener('mouseenter', () => video.play().catch(e => {})); card.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; }); } }
              return card;
          }
+
          function createListToolCard(tool = {}) {
             const card = document.createElement('div'); card.className = 'tool-card overflow-hidden flex flex-col md:flex-row';
             let typeClass = '', typeText = '';
@@ -667,17 +1237,22 @@
             const categoryInfo = CATEGORIES.find(c => c.id === tool.category) || CATEGORIES.find(c => c.id === 'others') || { id: 'others', name: 'Outros', icon: 'cog', keywords: 'tool' };
             const dateFormatted = tool.dateAdded ? new Date(tool.dateAdded).toLocaleDateString('pt-BR', { year: '2-digit', month: 'short', day: 'numeric'}) : 'N/A';
             const safeUrl = tool.url && tool.url.startsWith('http') ? tool.url : '#';
-            const mediaUrl = tool.media || getMediaUrl(categoryInfo.id, tool.name);
+            // MODIFIED: Use DEFAULT_IMAGE_URL first, then fallback
+            const mediaUrl = tool.media || DEFAULT_IMAGE_URL;
+            const fallbackMediaUrl = `https://source.unsplash.com/random/800x600/?abstract,technology&sig=${Math.random()}`; // Final fallback
+            // END MODIFICATION
             const toolName = tool.name || 'Ferramenta Sem Nome';
             const toolDesc = tool.description || 'Sem descrição.';
             const toolRating = tool.rating || 'N/A';
-            const safeToolName = toolName.replace(/"/g, '"');
+            const safeToolName = toolName.replace(/"/g, '&quot;'); // Escape quotes for HTML attributes
 
              card.innerHTML = `
                  <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="flex flex-col md:flex-row w-full group">
                     <div class="relative tool-media-container-list md:h-auto">
                          ${isVideo ? `<video src="${mediaUrl}" class="absolute inset-0 w-full h-full object-cover" loop muted playsinline disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback" aria-label="${safeToolName} video preview"></video>`
-                                  : `<img src="${mediaUrl}" alt="${safeToolName} preview image" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='https://source.unsplash.com/random/800x600/?abstract,technology&sig=${Math.random()}';">`}
+                                  // MODIFIED: Added onerror fallback
+                                  : `<img src="${mediaUrl}" alt="${safeToolName} preview image" class="absolute inset-0 w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='${fallbackMediaUrl}';">`}
+                                  // END MODIFICATION
                          ${tool.badge ? `<div class="absolute top-2 left-2 z-10"><span class="tag-badge tag">${tool.badge}</span></div>` : ''}
                      </div>
                       <div class="flex-grow p-4 md:p-5 flex flex-col">
